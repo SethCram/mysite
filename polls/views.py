@@ -8,6 +8,8 @@ from django.template import loader
 
 from django.urls import reverse
 
+from django.views import generic
+
 from .models import Question, Choice
 
 # Create your views here.
@@ -39,7 +41,7 @@ def index(request):
     return HttpResponse( template.render(context, request))
 """
 
-#Fourth rendition: (template shortcut)
+"""#Fourth rendition: (template shortcut)
 #display latest 5 poll ?'s in syst:
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -47,6 +49,16 @@ def index(request):
         'latest_question_list': latest_question_list,
         }
     return render(request, 'polls/index.html', context)
+"""
+
+#Fifth rendition: (generic view)
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+    
+    def get_queryset(self):
+        """Return last five published questions."""
+        return Question.objects.order_by('-pub_date')[:5]
 
 """First rendition: (placeholder)
 def detail(request, question_id):
@@ -64,12 +76,19 @@ def detail(request, question_id):
     return render(request, 'polls/detail.html', context)
 """
 
-#Third rendition: (error 404 shortcut)
+"""#Third rendition: (error 404 shortcut)
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     context = {'question':question}
     return render(request, 'polls/detail.html', context)
+"""
 
+#Fourth rendition: (generic views)
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+"""First Rendition: 
 def results(request, question_id):
     #response = "You're looking at the results of question %s.
     #return HttpResponse(response % question_id)
@@ -77,6 +96,12 @@ def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', { 
         'question': question})
+"""
+
+#Second Rendition: (generic views)
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 """First rendition: (placeholder)
 def vote(request, question_id):
