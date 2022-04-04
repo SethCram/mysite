@@ -10,6 +10,8 @@ from django.urls import reverse
 
 from django.views import generic
 
+from django.utils import timezone
+
 from .models import Question, Choice
 
 # Create your views here.
@@ -56,10 +58,21 @@ class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
     
+    """First ed: (publishes all questions)
     def get_queryset(self):
-        """Return last five published questions."""
+        #docstring: Return last five published questions.
         return Question.objects.order_by('-pub_date')[:5]
+    """
+    
+    #Second ed: (publish questions w/ pub date passed)
+    def get_queryset(self):
+        """Return last five published questions w/ pub date passed."""
+        return Question.objects.filter(
+                pub_date__lte = timezone.now()
+                ).order_by('-pub_date')[:5]
 
+    
+    
 """First rendition: (placeholder)
 def detail(request, question_id):
     return HttpResponse("You're looking at question %s." % question_id)
@@ -87,7 +100,14 @@ def detail(request, question_id):
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
-
+    
+    def get_queryset(self):
+        """
+        Excludes any questions not yet published.
+        """
+        
+        return Question.objects.filter(pub_date__lte = timezone.now())
+        
 """First Rendition: 
 def results(request, question_id):
     #response = "You're looking at the results of question %s.

@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html>
-    <!-- should this be in body or head? --> 
-	{% if latest_question_list %}
-		<ul> <!-- underline -->
-		{% for question in latest_question_list %}
-			<!--First Rendition: (hardcoded) 
-			<li><a href="/polls/{{ question.id }}/">{{question.question_text }}</a></li> 
-			--> <!-- li = list, takes ppl to details page -->
-			
-			<!--Third Rendition: (namespaced)-->
-			<li><a href="{% url 'polls:detail' question.id %}">{{question.question_text }}</a></li>
-			
-		{% endfor %}
-		</ul>
-	{% else %}
-		<p>No polls are avaliable.</p>
-	{% endif %}
-</html>
+{% load static %}
+
+<link rel = "stylesheet" type = "text/css" href = "{% static 'polls/style.css' %}">
+
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}

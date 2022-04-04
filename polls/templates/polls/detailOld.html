@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+   <!-- {{ question }} --> <!-- placeholder -->
+
+<!--First interation: (displays text and choice in txt)
+   <h1>{{ question.question_text }}</h1>
+   <ul>
+   {% for choice in question.choice_set.all %}
+		<li>{{ choice.choice_text }}</li>
+   {% endfor %}
+   </ul>
+-->
+
 
 <!--Second Interation: -->
 <form action="{% url 'polls:vote' question.id %}" method="post"> 
@@ -21,9 +32,7 @@
 			{{ choice.choice_text }}</label><br> <!-- br = ? -->
 	{% endfor %}
 </fieldset>
-
 <input type="submit" value="Vote">
-
 </form>	
 		
 
