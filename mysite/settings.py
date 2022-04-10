@@ -88,7 +88,7 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bestbuy rd', #name of DB
+        'NAME': 'polls_DB', #name of DB
         'USER': 'root',
         #'PASSWORD': '', #empty str means rando pass (if not included, defaults to none)
         'HOST': 'localhost', #empty str means localhost
